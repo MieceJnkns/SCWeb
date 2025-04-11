@@ -1,33 +1,38 @@
-const chapterTextDiv = document.getElementById('chapter-text');
-const prevButton = document.getElementById('prev-chapter');
-const nextButton = document.getElementById('next-chapter');
-let currentChapter = 0;
+// Smooth Scrolling for Navigation Links
+document.querySelectorAll('nav ul li a').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetSection = document.querySelector(this.getAttribute('href'));
+        targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+});
 
-const chapters = [
-    "Chapter 1: The Awakening. The sun rose, casting long shadows across the ancient ruins...",
-    "Chapter 2: The Journey Begins. They set off on their perilous journey, unsure of what lay ahead...",
-    "Chapter 3: The Hidden City. Deeper into the ruins, they discovered a city hidden from time...",
-    "Chapter 4: The Revelation. A shocking discovery changed everything they thought they knew."
-];
+// Back to Top Button Functionality
+const backToTopButton = document.createElement('button');
+backToTopButton.innerText = '↑';
+backToTopButton.style.position = 'fixed';
+backToTopButton.style.bottom = '20px';
+backToTopButton.style.right = '20px';
+backToTopButton.style.padding = '10px';
+backToTopButton.style.backgroundColor = '#f39c12';
+backToTopButton.style.color = '#fff';
+backToTopButton.style.border = 'none';
+backToTopButton.style.borderRadius = '50%';
+backToTopButton.style.cursor = 'pointer';
+backToTopButton.style.display = 'none';
+backToTopButton.style.zIndex = '1000';
+document.body.appendChild(backToTopButton);
 
-function loadChapter(chapterIndex) {
-    chapterTextDiv.innerHTML = chapters[chapterIndex];
-    prevButton.disabled = chapterIndex === 0;
-    nextButton.disabled = chapterIndex === chapters.length - 1;
-}
-
-loadChapter(currentChapter);
-
-prevButton.addEventListener('click', () => {
-    if (currentChapter > 0) {
-        currentChapter--;
-        loadChapter(currentChapter);
+// Show/Hide the Button on Scroll
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+        backToTopButton.style.display = 'block';
+    } else {
+        backToTopButton.style.display = 'none';
     }
 });
 
-nextButton.addEventListener('click', () => {
-    if (currentChapter < chapters.length - 1) {
-        currentChapter++;
-        loadChapter(currentChapter);
-    }
+// Scroll to Top on Button Click
+backToTopButton.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 });
